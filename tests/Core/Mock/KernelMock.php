@@ -36,7 +36,7 @@ class KernelMock implements KernelInterface
      */
     public function getConfig(): KernelConfig
     {
-        return new KernelConfig('test', true, 'foo');
+        return new KernelConfig('test', true, '/tmp/');
     }
 
     /**
