@@ -36,7 +36,7 @@ class KernelMock implements KernelInterface
      */
     public function getConfig(): KernelConfig
     {
-        return new KernelConfig('test', true, '/tmp/');
+        return new KernelConfig('test', true, '/tmp/avalonia');
     }
 
     /**
@@ -45,5 +45,13 @@ class KernelMock implements KernelInterface
     public function getModules(): array
     {
         return [];
+    }
+
+    /**
+     * @return void
+     */
+    public function shutdown()
+    {
+        // noop
     }
 }
