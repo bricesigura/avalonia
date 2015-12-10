@@ -1,0 +1,40 @@
+{
+    "name": "avalonia/avalonia",
+    "description": "PHP7 framework designed for building network applications",
+    "require": {
+        "php": "^7.0.0",
+        "symfony/yaml": "^3.0",
+        "symfony/event-dispatcher": "^3.0",
+        "symfony/filesystem": "^3.0",
+        "symfony/serializer": "^3.0",
+        "symfony/intl": "^3.0",
+        "psr/log": "^1.0",
+        "container-interop/container-interop": "^1.1",
+        "monolog/monolog": "^1.17",
+        "hoa/socket": "^0.15.09",
+        "symfony/dependency-injection": "^3.0",
+        "symfony/console": "^3.0",
+        "symfony/config": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.1"
+    },
+    "license": "LGPL-v3+",
+    "authors": [
+        {
+            "name": "Benjamin Perche",
+            "email": "benjamin@perche.me"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Avalonia\\": "src/Avalonia/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Avalonia\\Tests\\": "tests/"
+        }
+    }
+}
