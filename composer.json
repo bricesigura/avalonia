@@ -36,5 +36,8 @@
         "psr-4": {
             "Avalonia\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
