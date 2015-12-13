@@ -1,5 +1,5 @@
 {
-    "name": "avalonia/avalonia",
+    "name": "avalonia/core",
     "description": "PHP7 framework designed for building network applications",
     "require": {
         "php": "^7.0.0",
