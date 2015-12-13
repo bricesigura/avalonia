@@ -1,14 +1,16 @@
 <?php
 declare(strict_types = 1);
 
-namespace Avalonia\Tests\Core\Mock;
+namespace Avalonia\Core\Tests\Mock;
 
 use Avalonia\Core\KernelConfig;
 use Avalonia\Core\KernelInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class KernelMock
- * @package Avalonia\Tests\Core
+ * @package Avalonia\Core\Tests\Mock
  * @author Benjamin Perche <benjamin@perche.me>
  */
 class KernelMock implements KernelInterface
@@ -42,7 +44,7 @@ class KernelMock implements KernelInterface
     /**
      * @return \Avalonia\Core\Module\ModuleInterface[]
      */
-    public function getModules(): array
+    public function getRegisteredModules(): array
     {
         return [];
     }
@@ -53,5 +55,13 @@ class KernelMock implements KernelInterface
     public function shutdown()
     {
         // noop
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    public function getDispatcher(): EventDispatcherInterface
+    {
+        return new EventDispatcher();
     }
 }

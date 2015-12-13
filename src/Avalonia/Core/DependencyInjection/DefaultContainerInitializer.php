@@ -7,11 +7,11 @@ use Avalonia\Core\KernelInterface;
 use Interop\Container\ContainerInterface;
 
 /**
- * Class NullContainerInitializer
+ * Class DefaultContainerInitializer
  * @package Avalonia\Core\DependencyInjection
  * @author Benjamin Perche <benjamin@perche.me>
  */
-class NullContainerInitializer implements ContainerInitializerInterface
+class DefaultContainerInitializer implements ContainerInitializerInterface
 {
     /**
      * @return ContainerInterface
@@ -28,6 +28,6 @@ class NullContainerInitializer implements ContainerInitializerInterface
      */
     public function initializeContainer(KernelInterface $kernel): ContainerInterface
     {
-        return new NullContainer($kernel, $kernel->getConfig()->getCacheDir());
+        return new DefaultContainer($kernel, $kernel->getConfig()->getCacheDir());
     }
 }

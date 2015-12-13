@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Avalonia\Core;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Interface KernelInterface
@@ -35,5 +36,10 @@ interface KernelInterface
     /**
      * @return \Avalonia\Core\Module\ModuleInterface[]
      */
-    public function getModules(): array;
+    public function getRegisteredModules(): array;
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    public function getDispatcher(): EventDispatcherInterface;
 }

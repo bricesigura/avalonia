@@ -27,7 +27,7 @@ class KernelConfig
     /**
      * @return string
      */
-    public function getEnvironment()
+    public function getEnvironment(): string
     {
         return $this->environment;
     }
@@ -35,7 +35,7 @@ class KernelConfig
     /**
      * @return boolean
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return $this->debug;
     }
@@ -43,7 +43,7 @@ class KernelConfig
     /**
      * @return string
      */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return $this->cacheDir;
     }

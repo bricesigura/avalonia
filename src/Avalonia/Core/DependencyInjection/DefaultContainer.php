@@ -5,15 +5,14 @@ namespace Avalonia\Core\DependencyInjection;
 
 use Avalonia\Core\KernelInterface;
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
-use Interop\Container\Exception\NotFoundException;
+use Avalonia\Core\DependencyInjection\Exception\NotFoundException;
 
 /**
- * Class NullContainer
+ * Class DefaultContainer
  * @package Avalonia\Core\DependencyInjection
  * @author Benjamin Perche <benjamin@perche.me>
  */
-class NullContainer implements ContainerInterface
+class DefaultContainer implements ContainerInterface
 {
     /** @var KernelInterface */
     private $kernel;
@@ -22,7 +21,7 @@ class NullContainer implements ContainerInterface
     private $cacheDir;
 
     /**
-     * NullContainer constructor.
+     * DefaultContainer constructor.
      * @param KernelInterface $kernel
      * @param string $cacheDir
      */
@@ -37,8 +36,8 @@ class NullContainer implements ContainerInterface
      *
      * @param string $id Identifier of the entry to look for.
      *
-     * @throws NotFoundException  No entry was found for this identifier.
-     * @throws ContainerException Error while retrieving the entry.
+     * @throws \Interop\Container\Exception\NotFoundException  No entry was found for this identifier.
+     * @throws \Interop\Container\Exception\ContainerException Error while retrieving the entry.
      *
      * @return mixed Entry.
      */
@@ -46,9 +45,11 @@ class NullContainer implements ContainerInterface
     {
         if ('kernel' === $id) {
             return $this->kernel;
+        } elseif ('event_dispatcher' === $id) {
+            return $this->kernel->getDispatcher();
         }
 
-        return null;
+        throw new NotFoundException(sprintf("The service '%s' doesn't exist", $id));
     }
 
     /**
@@ -61,8 +62,8 @@ class NullContainer implements ContainerInterface
      */
     public function has($id)
     {
-        if ('kernel' === $id) {
-            return $this->cacheDir;
+        if (in_array($id, ['kernel', 'event_dispatcher'])) {
+            return true;
         }
 
         return false;

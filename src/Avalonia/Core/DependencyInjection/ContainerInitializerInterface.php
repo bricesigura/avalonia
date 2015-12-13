@@ -21,6 +21,7 @@ interface ContainerInitializerInterface
      * It must inject:
      * - services:
      *     - kernel: the kernel
+     *     - event_dispatcher: the kernel event dispatcher
      * - parameters: (If handles parameter)
      *     - kernel.cache_dir: the cache directory (from $kernel->getConfig()->getCacheDir())
      *

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Avalonia\Core;
 
-use Avalonia\Core\DependencyInjection\ContainerInitializerInterface;
-use Avalonia\Core\DependencyInjection\NullContainerInitializer;
+use Avalonia\Core\DependencyInjection\{ContainerInitializerInterface, DefaultContainerInitializer};
+use Avalonia\Core\Exception\TypeException;
 use Avalonia\Core\Module\ModuleInterface;
 use Interop\Container\ContainerInterface as InteropContainerInterface;
-
+use Symfony\Component\EventDispatcher\{EventDispatcher, EventDispatcherInterface};
 
 /**
  * Class Kernel
@@ -31,10 +31,17 @@ class Kernel implements KernelInterface
     /** @var ContainerInitializerInterface */
     private $containerInitializer;
 
-    public function __construct(KernelConfig $config, ContainerInitializerInterface $containerInitializer = null)
-    {
+    /** @var EventDispatcherInterface */
+    private $dispatcher;
+
+    public function __construct(
+        KernelConfig $config,
+        ContainerInitializerInterface $containerInitializer = null,
+        EventDispatcherInterface $dispatcher = null
+    ) {
         $this->config = $config;
-        $this->containerInitializer = $containerInitializer ?: new NullContainerInitializer();
+        $this->containerInitializer = $containerInitializer ?: new DefaultContainerInitializer();
+        $this->dispatcher = $dispatcher ?: new EventDispatcher();
     }
 
     /**
@@ -43,7 +50,13 @@ class Kernel implements KernelInterface
     public function boot()
     {
         if (!$this->isBooted()) {
+            $this->prepareModules();
             $this->container = $this->containerInitializer->initializeContainer($this);
+
+            foreach ($this->modules as $module) {
+                $module->boot($this);
+            }
+
             $this->booted = true;
         }
     }
@@ -69,9 +82,25 @@ class Kernel implements KernelInterface
     /**
      * @return ModuleInterface[]
      */
-    public function getModules(): array
+    public function getRegisteredModules(): array
     {
-        return [];
+        return $this->modules ?? [];
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
+    }
+
+    /**
+     * @return InteropContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     /**
@@ -79,6 +108,29 @@ class Kernel implements KernelInterface
      */
     public function shutdown()
     {
+        foreach ($this->modules as $module) {
+            $module->shutdown($this);
+        }
+    }
 
+    /**
+     * @return ModuleInterface[]
+     */
+    protected function getModules(): array
+    {
+        return [];
+    }
+
+    private function prepareModules()
+    {
+        $modules = $this->getModules();
+
+        foreach ($modules as $module) {
+            if (!$module instanceof ModuleInterface) {
+                throw new TypeException(ModuleInterface::class, $module);
+            }
+        }
+
+        $this->modules = $modules;
     }
 }
